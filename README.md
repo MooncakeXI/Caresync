@@ -22,6 +22,10 @@ CareSync’s core concept is to leverage Blockchain for securely managing health
 
 model
 https://drive.google.com/drive/folders/1nPIqs6WjD_p8uwXfSEQy-K1o7tnMlHHA?usp=drive_link
+colab
+https://colab.research.google.com/drive/1r9J0dEn_SuDfxpVtXIUZXL1uDvcA8Yu4
+slide 
+https://www.canva.com/design/DAGWC9rWSsc/BjqlgvB7jmTdXOtlkRrzaQ/view?utm_content=DAGWC9rWSsc&utm_campaign=designshare&utm_medium=link&utm_source=editor
 
 ## User Benefits
 
