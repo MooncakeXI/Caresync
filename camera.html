@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareSync</title>
+  <style>
+    /* รีเซ็ตเบื้องต้น */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #f7c2c2, #ffb6c1); /* พื้นหลังสีชมพูอ่อน */
+      flex-direction: column;
+      text-align: center;
+      color: #333;
+      padding: 20px;
+      transition: opacity 1s ease; /* อนิเมชั่น fade */
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #ff4d79;
+      margin-bottom: 20px;
+    }
+
+    .video-container {
+      width: 100%;
+      max-width: 600px;
+      aspect-ratio: 1; /* กำหนดอัตราส่วนเป็น 1:1 เพื่อให้เป็นสี่เหลี่ยมจัตุรัส */
+      background-color: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      max-width: 600px;
+    }
+
+    .button {
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #ff6b81;
+      border: none;
+      border-radius: 20px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      margin-top: 10px;
+      box-shadow: 0 4px 10px rgba(255, 107, 129, 0.3);
+    }
+
+    .button:hover {
+      background-color: #ff4f63;
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(255, 107, 129, 0.5);
+    }
+
+    .button:active {
+      transform: scale(1);
+      box-shadow: 0 4px 10px rgba(255, 107, 129, 0.3);
+    }
+
+    .error-message {
+      color: red;
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+
+    .custom-file-upload {
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #ff6b81;
+      border-radius: 20px;
+      color: white;
+      cursor: pointer;
+      margin-top: 10px;
+      display: inline-block;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      text-align: center;
+    }
+
+    #image-input {
+      display: none;
+    }
+
+    .custom-file-upload:hover {
+      background-color: #ff4f63;
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(255, 107, 129, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <h1>Access Camera</h1>
+
+  <div class="video-container" id="video-container">
+    <video id="video" autoplay></video>
+  </div>
+
+  <div class="button-container">
+    <button id="start-button" class="button" onclick="startCamera()">Open Camera</button>
+    <button id="capture-button" class="button" onclick="captureImage()" style="display: none;">Capture Image</button>
+    <button id="flip-button" class="button" onclick="flipCamera()" style="display: none;">Flip Camera</button>
+    <button class="button" onclick="goToIndex()">Back to Index</button>
+    <label for="image-input" class="custom-file-upload">
+      Choose Image
+    </label>
+    <input type="file" id="image-input" onchange="loadImage(event)" accept="image/*" />
+  </div>
+
+  <div class="error-message" id="error-message"></div>
+
+  <script>
+    let currentStream = null;
+    let currentFacingMode = 'user';
+
+    function startCamera() {
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: currentFacingMode } })
+        .then((stream) => {
+          currentStream = stream;
+          document.getElementById('video').srcObject = stream;
+          document.getElementById('capture-button').style.display = 'block';
+          document.getElementById('flip-button').style.display = 'block';
+        })
+        .catch((error) => {
+          document.getElementById('error-message').innerText = "Camera access denied.";
+        });
+    }
+
+    function flipCamera() {
+      currentFacingMode = currentFacingMode === 'user' ? 'environment' : 'user';
+      if (currentStream) {
+        currentStream.getTracks().forEach(track => track.stop());
+      }
+      startCamera();
+    }
+
+    function goToIndex() {
+      document.body.style.opacity = '0'; // เริ่มต้น fade-out
+      setTimeout(function() {
+        window.location.href = "index.html";
+      }, 1000);
+    }
+
+    function captureImage() {
+      const video = document.getElementById('video');
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL('image/png');
+
+      localStorage.setItem('capturedImage', dataUrl);
+
+      // เริ่มต้น fade-out หลังจากถ่ายภาพ
+      document.body.style.opacity = '0';
+      setTimeout(function() {
+        window.location.href = 'image.html';
+      }, 1000);
+    }
+
+    function loadImage(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const imageData = e.target.result;
+
+          localStorage.setItem('capturedImage', imageData);
+          
+          // เริ่มต้น fade-out หลังจากเลือกรูป
+          document.body.style.opacity = '0';
+          setTimeout(function() {
+            window.location.href = 'image.html';
+          }, 1000);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+</body>
+</html>
