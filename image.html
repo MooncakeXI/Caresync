@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareSync</title>
+  <style>
+    /* Basic Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(135deg, #f7c2c2, #ffb6c1);
+      flex-direction: column;
+      text-align: center;
+      color: #333;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #ff4d79;
+      margin-bottom: 20px;
+    }
+
+    .container {
+      width: 80%;
+      max-width: 800px;
+      background-color: #fff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      padding: 20px;
+    }
+
+    .image-container {
+      flex: 1;
+      padding: 10px;
+    }
+
+    img {
+      width: 100%;
+      border-radius: 10px;
+      max-width: 100%;
+    }
+
+    .text-container {
+      flex: 1;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .analysis-text {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 15px;
+      padding: 15px;
+      border: 1px solid #ffb6c1;
+      border-radius: 10px;
+      background-color: #ffe6e6;
+      width: 100%;
+    }
+
+    .disease-info {
+      font-size: 1.2rem;
+      color: #ff4d79;
+      padding: 12px;
+      background-color: #fff0f0;
+      border-radius: 10px;
+      border: 1px solid #ffb6c1;
+      width: 100%;
+    }
+
+    .button {
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #ff6b81;
+      border: none;
+      border-radius: 20px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      margin-top: 20px;
+      box-shadow: 0 4px 10px rgba(255, 107, 129, 0.3);
+    }
+
+    .button:hover {
+      background-color: #ff4f63;
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(255, 107, 129, 0.5);
+    }
+
+    .button:active {
+      transform: scale(1);
+      box-shadow: 0 4px 10px rgba(255, 107, 129, 0.3);
+    }
+
+  </style>
+</head>
+<body>
+  <h1>Image Analysis</h1>
+
+  <div class="container">
+    <div class="image-container">
+      <img id="captured-image" src="" alt="Captured Image">
+    </div>
+    <div class="text-container">
+      <div class="analysis-text" id="analysis-text">
+        Analyzing image... Potential related diseases will be displayed here.
+      </div>
+      <div class="disease-info" id="disease-info">
+        Possible condition: Unknown (based on initial analysis)
+      </div>
+    </div>
+  </div>
+
+  <!-- ปุ่ม Claim Reward -->
+  <button class="button" onclick="claimReward()">Claim Reward</button>
+  <button class="button" onclick="goBack()">Back to Camera</button>
+
+  <script>
+    function setImage() {
+      const img = document.getElementById('captured-image');
+      const dataUrl = localStorage.getItem('capturedImage');
+      if (dataUrl) {
+        img.src = dataUrl;
+        setTimeout(() => {
+          document.getElementById('analysis-text').innerText = 
+            "Based on the analysis, this image might show minor symptoms of a condition. Please consult a medical professional for a detailed diagnosis.";
+          
+          document.getElementById('disease-info').innerText = "Possible condition: Minor rash (preliminary assessment)";
+        }, 2000);
+      } else {
+        document.getElementById('analysis-text').innerText = 
+          "No image data found. Please try again.";
+        document.getElementById('disease-info').innerText = "Possible condition: Unknown";
+      }
+    }
+
+    function goBack() {
+      window.location.href = "camera.html";
+    }
+
+    function claimReward() {
+      const consent = confirm("Do you consent to share data for analysis?");
+      if (consent) {
+        window.location.href = "next-page.html";
+      }
+    }
+
+    setImage();
+  </script>
+</body>
+</html>
