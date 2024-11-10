@@ -13,11 +13,11 @@ CareSync’s core concept is to leverage Blockchain for securely managing health
 - **Health Promotion**: Users receive free preliminary health assessments and token rewards while contributing valuable data for public health benefits.
 
 ## Technologies Used
-[![Language](https://skillicons.dev/icons?i=html,css,rust,tensorflow)](https://skillicons.dev)
+[![Language](https://skillicons.dev/icons?i=html,css,rust,pytorch)](https://skillicons.dev)
 - **HTML**: For structuring the web application.
 - **CSS**: For styling and design.
 - **Rust**: For Blockchain development and efficient data processing.
-- **TensorFlow**: For developing and training the AI model that analyzes users' photos.
+- **Pytorch**: For developing and training the AI model that analyzes users' photos.
 
 ## User Benefits
 
