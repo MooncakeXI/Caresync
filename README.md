@@ -1,3 +1,5 @@
+# This prototype is used for the icp hacker house hackathon.
+
 # Caresync
 CareSync is a Blockchain-based project that combines skin condition detection through image uploads with personal health data management. This platform enables users to conduct preliminary skin condition checks from home, while also offering them the choice to exchange health data for tokens voluntarily, benefiting both personal and public health initiatives.
 
